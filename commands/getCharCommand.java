@@ -1,9 +1,9 @@
 package Test.bot.commands;
 
-import Test.bot.utils.SendMessage;
-import Test.bot.utils.jdr.feuillePersonnage;
 import Test.bot.Command;
 import Test.bot.MainBot;
+import Test.bot.utils.SendMessage;
+import Test.bot.utils.jdr.feuillePersonnage;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 /**
@@ -22,24 +22,25 @@ public class getCharCommand implements Command {
     public void action(String[] args, MessageReceivedEvent event) {
         String message = event.getAuthor().getAsMention() + "\n";
         System.out.println(args[0]);
-        if (args[0].startsWith("-")){
+        if (args[0].startsWith("-")) {
             feuillePersonnage perso = MainBot.persos.db.get(args[1]);
-                if (args[0].equals("-a"))
-                        message += perso.getHeader() + "\n" + perso.getMoney() + "\n" + perso.getStats() + "\n" + perso.getComps() + "\n" + perso.getInv();
-                else if (args[0].equals("-c"))
-                    message += perso.getComps();
-                else if (args[0].equals("-i"))
-                    message += perso.getInv();
-                else if (args[0].equals("-m"))
-                    message += perso.getMoney();
-                else if (args[0].equals("-s"))
-                    message += perso.getStats();
-                else
-                    message += perso.getHeader();
-            } else {
+            if (args[0].startsWith("-a"))
+                message += perso.getHeader() + "\n" + perso.getMoney() + "\n" + perso.getStats() + "\n" + perso.getComps() + "\n" + perso.getInv();
+            else if (args[0].startsWith("-c"))
+                message += perso.getComps();
+            else if (args[0].startsWith("-i"))
+                message += perso.getInv();
+            else if (args[0].startsWith("-m"))
+                message += perso.getMoney();
+            else if (args[0].startsWith("-s"))
+                message += perso.getStats();
+            else
+                message += perso.getHeader();
+        } else {
             feuillePersonnage perso = MainBot.persos.db.get(args[0]);
-            if (event.getAuthor() != perso.getPlayer()) message += perso.getHeader() + "\n" + perso.getStats();
-            else message += perso.getHeader() + "\n" + perso.getMoney() + "\n" + perso.getStats() + "\n" + perso.getComps() + "\n" + perso.getInv();
+            if (event.getAuthor().getId().equals(perso.getPlayer())) message += perso.getHeader() + "\n" + perso.getStats();
+            else
+                message += perso.getHeader() + "\n" + perso.getMoney() + "\n" + perso.getStats() + "\n" + perso.getComps() + "\n" + perso.getInv();
         }
         new SendMessage(event.getTextChannel(), message);
     }

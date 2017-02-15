@@ -13,10 +13,12 @@ public class CommandParser {
         String raw = rw;
         String beheaded = raw.replaceFirst(".", "");
         String[] splitBeheaded = beheaded.split(" ");
-        for (String s : splitBeheaded) {split.add(s);}
+        for (String s : splitBeheaded) {
+            split.add(s);
+        }
         String invoke = split.remove(0);
-        String[] args = new String[raw.length()-2];
-        int i =0;
+        String[] args = new String[splitBeheaded.length - 1];
+        int i = 0;
         for (String s : split) {
             args[i] = s;
             i++;

@@ -10,8 +10,8 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
  * Created by Simerron on 19/01/2017.
  */
 public class BotListener extends ListenerAdapter {
-    private void scanMessage(MessageReceivedEvent event){
-        if(event.getMessage().getContent().startsWith(".") && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()) {
+    private void scanMessage(MessageReceivedEvent event) {
+        if (event.getMessage().getContent().startsWith(".") && event.getMessage().getAuthor().getId() != event.getJDA().getSelfUser().getId()) {
             MainBot.handleCommand(MainBot.parser.parse(event.getMessage().getRawContent(), event));
         }
     }
@@ -20,8 +20,9 @@ public class BotListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         scanMessage(event);
     }
+
     @Override
-    public void onMessageUpdate(MessageUpdateEvent event){
+    public void onMessageUpdate(MessageUpdateEvent event) {
         MessageReceivedEvent e = new MessageReceivedEvent(event.getJDA(), event.getResponseNumber(), event.getMessage());
         scanMessage(e);
     }

@@ -28,7 +28,7 @@ public class RollCommand implements Command {
         event.getMessage().deleteMessage().queue();
         int nb, nbDice, faces, die;
         long result = 0;
-        String message = event.getMember().getAsMention() +" rolled " + args[0] + "[";
+        String message = event.getMember().getAsMention() + " rolled " + args[0] + "[";
         String[] dice = args[0].split("d");
         if (dice.length == 0) {
             System.out.println("Error args");
@@ -45,7 +45,7 @@ public class RollCommand implements Command {
             result += die;
             message = message + die + ", ";
         }
-        message = message.substring(0, message.length()-2);
+        message = message.substring(0, message.length() - 2);
         message += "] = " + result;
         new SendMessage(event.getTextChannel(), message);
     }

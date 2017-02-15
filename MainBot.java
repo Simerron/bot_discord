@@ -2,8 +2,8 @@ package Test.bot;
 
 import Test.bot.commands.*;
 import Test.bot.utils.CommandParser;
-import Test.bot.commands.Help;
 import Test.bot.utils.jdr.dataBase;
+import Test.bot.utils.jdr.serialize;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
@@ -30,7 +30,7 @@ public class MainBot {
     private JDA jda;
 
     private boolean stop = false;
-    public  static final CommandParser parser = new CommandParser();
+    public static final CommandParser parser = new CommandParser();
 
     public static HashMap<String, Command> commands = new HashMap<String, Command>();
     public static dataBase persos;
@@ -39,8 +39,8 @@ public class MainBot {
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(token).addListener(new BotListener()).setGame(Game.of("type .help for help")).setBulkDeleteSplittingEnabled(true).buildBlocking();
             jda.setAutoReconnect(true);
-            persos = new dataBase(); //créer une base de donnée Hashmap pour sauvegarder les personnages
-            persos.retrieveData(); //récupère les feuilles de personnage serialisé
+            persos = new serialize().retreive(); //Retreive already existing hashmap
+            if (persos == null){persos = new dataBase();}
         } catch (LoginException | RateLimitedException | InterruptedException e) {
             e.printStackTrace();
             System.out.println("Une erreur est survenue veuilliez verifier le token ou votre connection internet");
@@ -67,11 +67,13 @@ public class MainBot {
             Scanner scanner = new Scanner(System.in);
             String cmd = scanner.next();
             if (cmd.equalsIgnoreCase("stop")) {
+                new serialize().save(persos);
                 jda.shutdown(true);
                 stop = true;
             }
         }
     }
+
     public static AudioPlayerManager playerManager;
 
     public static void handleCommand(CommandParser.CommandContainer cmd) {
@@ -85,15 +87,15 @@ public class MainBot {
         }
     }
 
-    public static void log(String evnt, String who){
+    public static void log(String evnt, String who) {
         FileOutputStream logOutput = null;
         try {
             logOutput = new FileOutputStream(new File("Log.txt"));
-            String log = "["+ LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))+ " " +LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss"))+"]"+" ["+evnt+" log  ] "+who;
+            String log = "[" + LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("hh:mm:ss")) + "]" + " [" + evnt + " log  ] " + who;
             logOutput.write(log.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 logOutput.close();
             } catch (Exception e) {

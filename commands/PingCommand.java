@@ -20,7 +20,7 @@ public class PingCommand implements Command {
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        MainBot.log("Command Log", "[Ping] From User : "+event.getAuthor());
+        MainBot.log("Command Log", "[Ping] From User : " + event.getAuthor());
         Message = new SendMessage(event.getTextChannel(), "PONG!");
     }
 

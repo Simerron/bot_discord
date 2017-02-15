@@ -12,14 +12,14 @@ public class addCharCommand implements Command {
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
         if (args[0] != null)
-        return true;
+            return true;
         else return false;
     }
 
     @Override
     public void action(String[] args, MessageReceivedEvent event) {
-        MainBot.persos.db.put(args[0], new feuillePersonnage(args[0], event));
-        new SendMessage(event.getTextChannel(), "Personnage : "+args[0]+" créé");
+        MainBot.persos.db.put(args[0], new feuillePersonnage(args[0], event.getAuthor().getId()));
+        new SendMessage(event.getTextChannel(), "Personnage : " + args[0] + " créé");
     }
 
     @Override

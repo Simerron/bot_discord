@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class dataBase implements Serializable {
     public HashMap<String, feuillePersonnage> db = new HashMap<>();
 
-    public void retrieveData() {
+    /*public void retrieveData() {
         //Récupérer les donnée sérialisé
-    }
+    }*/
 }
